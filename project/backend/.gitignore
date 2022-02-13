@@ -1,0 +1,14 @@
+*.log
+*.pyc
+*.py[cod]
+__pycache__/
+db-volumes/
+
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+/.dockervenv/
