@@ -1,10 +1,11 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, text
 from sqlalchemy.orm import relationship
-from db import Base
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy_utils import UUIDType
 import uuid
 from datetime import datetime
 
+Base = declarative_base()
 
 class UserSite(Base):
   __tablename__ = "users_sites"
@@ -24,9 +25,9 @@ class User(Base):
   __tablename__ = "users"
   
   user_id = Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4)
-  username = Column(String(50), nullable=False)
-  email = Column(String(50), unique=True, nullable=False)
-  password = Column(String(50), nullable=False)
+  username = Column(String(512), nullable=True)
+  email = Column(String(512), unique=True, nullable=False)
+  password = Column(String(512), nullable=False)
   is_deleted = Column(Integer, default=0, nullable=False)
   version = Column(Integer, default=0, autoincrement=True, nullable=False)
   created_at = Column(DateTime, default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"), nullable=False)
@@ -44,9 +45,9 @@ class Site(Base):
   __tablename__ = "sites"
   
   site_id = Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4)
-  sitename = Column(String(1024), nullable=False)
-  sitelink = Column(String(1024), nullable=False)
-  word = Column(String(100), nullable=False)
+  sitename = Column(String(512), nullable=False)
+  sitelink = Column(String(512), nullable=False)
+  word = Column(String(512), nullable=False)
   is_deleted = Column(Integer, default=0, nullable=False)
   version = Column(Integer, default=0, autoincrement=True, nullable=False)
   created_at = Column(DateTime, default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"), nullable=False)
