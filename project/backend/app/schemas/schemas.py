@@ -1,6 +1,7 @@
+from typing import Optional
+from pydantic import BaseModel
 from datetime import datetime
 from uuid import UUID
-from pydantic import BaseModel
 
 
 class ModelBase(BaseModel):
@@ -24,10 +25,13 @@ class Site(SiteUpdateRequest, ModelBase):
   pass
 
 
-class UserBase(BaseModel):
-  username: str
+class UserAuth(BaseModel):
   email: str
   password: str
+
+
+class UserBase(UserAuth):
+  username: Optional[str] = None
 
 
 class UserUpdateRequest(UserBase):
@@ -41,3 +45,7 @@ class UserGETResponse(UserUpdateRequest, ModelBase):
 class UserSite(ModelBase):
   user_id: UUID
   site_id: UUID
+  
+  
+class SuccessMSG(BaseModel):
+  message: str
