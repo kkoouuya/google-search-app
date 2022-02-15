@@ -1,4 +1,4 @@
-from typing import List, Optional, Tuple
+from typing import Optional, Tuple
 from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.engine import Result
@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.model import User, Site
 from app.schemas.schemas import FavoSite
 from app.auth_utils import AuthJwtCsrf
+from uuid import UUID
 
 
 auth = AuthJwtCsrf()
@@ -43,7 +44,7 @@ async def db_create_favo_site(db: AsyncSession, data: FavoSite) -> dict:
     )
     
   result: Result = await db.execute(
-    select(Site).where(Site.user_id == user_id)
+    select(Site).where(Site.user_id == user_id, Site.is_deleted == 0)
   )
   
   site: Optional[Tuple[Site]] = result.first()
@@ -62,4 +63,20 @@ async def db_create_favo_site(db: AsyncSession, data: FavoSite) -> dict:
   await db.commit()
   await db.refresh(site)
   print('site registration successfully')
+  return site_serializer(site)
+
+
+async def db_get_site(db: AsyncSession, site_id: UUID) -> Optional[Site]:
+  result: Result = await db.execute(
+    select(Site).filter(Site.site_id == site_id, Site.is_deleted == 0)
+  )
+  site: Optional[Tuple[Site]] = result.first()
+  return site[0] if site is not None else None
+
+
+async def db_unfavorite_site(db: AsyncSession, site: Site) -> dict:
+  site.is_deleted = 1
+  db.add(site)
+  await db.commit()
+  await db.refresh(site)
   return site_serializer(site)
