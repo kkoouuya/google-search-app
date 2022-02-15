@@ -3,7 +3,7 @@ from fastapi import APIRouter, Response, Request, Depends, HTTPException
 from fastapi.encoders import jsonable_encoder
 from fastapi_csrf_protect import CsrfProtect
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.cruds.crud import db_create_favo_site, db_get_site, db_unfavorite_site
+from app.cruds.crud import db_create_favo_site, db_get_site, db_unfavorite_site, db_get_favorite_site
 from app.schemas.schemas import SiteBase, FavoSite, Site
 from app.auth_utils import AuthJwtCsrf
 from app.scraper import Scraper
@@ -21,6 +21,12 @@ async def scrape_site(request: Request, keyword: Optional[str] =None):
   auth.verify_jwt(request)
   sites = scraper.google_search(keyword)
   return sites
+
+
+@router.get('/api/favorite/{user_id}', response_model=Optional[List[Site]])
+async def get_favo_site(request: Request, user_id: UUID, db: AsyncSession = Depends(db_get)):
+  auth.verify_jwt(request)
+  return await db_get_favorite_site(db, user_id=user_id)
 
 
 @router.post('/api/favorite', response_model=Site)
