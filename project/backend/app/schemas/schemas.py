@@ -12,17 +12,18 @@ class ModelBase(BaseModel):
 
 
 class SiteBase(BaseModel):
-  sitename: str
-  sitelink: str
-  word: str
+  # rank: int
+  title: str
+  url: str
 
 
 class SiteUpdateRequest(SiteBase):
-  id: UUID
+  site_id: UUID
+  user_id: UUID
 
 
 class Site(SiteUpdateRequest, ModelBase):
-  pass
+  word: str
 
 
 class UserAuth(BaseModel):
@@ -42,6 +43,8 @@ class UserGETResponse(UserUpdateRequest, ModelBase):
   pass
 
 
-class UserSite(ModelBase):
+class FavoSite(BaseModel):
   user_id: UUID
-  site_id: UUID
+  title: str
+  url: str
+  word: str

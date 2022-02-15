@@ -1,9 +1,9 @@
+import uuid
+from datetime import datetime
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, text
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy_utils import UUIDType
-import uuid
-from datetime import datetime
 
 Base = declarative_base()
 

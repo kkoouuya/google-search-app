@@ -9,7 +9,7 @@ from app.schemas.auth import CsrfSettings, SuccessMSG
 
 app = FastAPI()
 app.include_router(auth.router)
-# app.include_router(site.router)
+app.include_router(site.router)
 origins = ['http://localhost:3000']
 app.add_middleware(
   CORSMiddleware,
