@@ -1,4 +1,4 @@
-from typing import Optional, Tuple
+from typing import List, Optional, Tuple
 from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.engine import Result
@@ -66,12 +66,29 @@ async def db_create_favo_site(db: AsyncSession, data: FavoSite) -> dict:
   return site_serializer(site)
 
 
-async def db_get_site(db: AsyncSession, site_id: UUID) -> Optional[Site]:
+async def db_get_site(db: AsyncSession, site_id: UUID) -> Optional[List[Site]]:
   result: Result = await db.execute(
     select(Site).filter(Site.site_id == site_id, Site.is_deleted == 0)
   )
-  site: Optional[Tuple[Site]] = result.first()
+  site: Optional[List[Site]] = result.first()
   return site[0] if site is not None else None
+
+
+async def db_get_favorite_site(db: AsyncSession, user_id: UUID) -> Optional[List[Site]]:
+  result: Result = await db.execute(
+    select(Site).filter(Site.user_id == user_id, Site.is_deleted == 0)
+  )
+  site: Optional[List[Site]] = result.all()
+  print(site)
+  # site: Optional[List[Site]] = result.first()
+  # print(site)
+  # return
+  items = []
+  for si in site:
+    for s in si:
+      items.append(site_serializer(s))
+  print(items)
+  return items if site is not None else None
 
 
 async def db_unfavorite_site(db: AsyncSession, site: Site) -> dict:
