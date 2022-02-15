@@ -45,7 +45,3 @@ class UserGETResponse(UserUpdateRequest, ModelBase):
 class UserSite(ModelBase):
   user_id: UUID
   site_id: UUID
-  
-  
-class SuccessMSG(BaseModel):
-  message: str
