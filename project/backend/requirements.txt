@@ -11,3 +11,5 @@ aiomysql==0.0.22
 passlib==1.7.4
 sqlalchemy_utils==0.38.2
 requests==2.25.1
+beautifulsoup4==4.10.0
+lxml==4.7.1
