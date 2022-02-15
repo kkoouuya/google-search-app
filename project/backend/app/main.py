@@ -4,8 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi_csrf_protect import CsrfProtect
 from fastapi_csrf_protect.exceptions import CsrfProtectError
 from app.routers import auth, site
-from app.schemas.auth import CsrfSettings
-from app.schemas.schemas import SuccessMSG
+from app.schemas.auth import CsrfSettings, SuccessMSG
 
 
 app = FastAPI()

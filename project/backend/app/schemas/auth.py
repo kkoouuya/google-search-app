@@ -11,3 +11,7 @@ class CsrfSettings(BaseModel):
 
 class Csrf(BaseModel):
   csrf_token: str
+
+
+class SuccessMSG(BaseModel):
+  message: str

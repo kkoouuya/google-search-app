@@ -31,7 +31,6 @@ async def db_signup(db: AsyncSession, data: UserAuth) -> dict:
     select(User).where(User.email == email)
   )
   overlaped_email = result.first()
-  # user: Optional[Tuple[User]] = result.first()
   
   if overlaped_email is not None:
     raise HTTPException(status_code=400, detail="Email is already be used")
