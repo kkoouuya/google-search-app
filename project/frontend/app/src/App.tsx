@@ -5,7 +5,6 @@ import { CsrfToken } from "./types/AuthType";
 import { useAppSelector } from "./app/hooks";
 import { selectCsrfState } from "./slices/appSlice";
 import { Auth } from "./components/Auth";
-import { Site } from "./components/Site";
 
 function App() {
   const csrf = useAppSelector(selectCsrfState);
@@ -27,9 +26,6 @@ function App() {
         <Switch>
           <Route exact path="/">
             <Auth />
-          </Route>
-          <Route exact path="/site">
-            <Site />
           </Route>
         </Switch>
       </BrowserRouter>
