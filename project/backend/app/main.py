@@ -10,7 +10,7 @@ from app.schemas.auth import CsrfSettings, SuccessMSG
 app = FastAPI()
 app.include_router(auth.router)
 app.include_router(site.router)
-origins = ['http://localhost:3000']
+origins = ['http://localhost:3007']
 app.add_middleware(
   CORSMiddleware,
   allow_origins=origins,
