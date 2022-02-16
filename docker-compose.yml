@@ -21,6 +21,18 @@ services:
    command: --default-authentication-plugin=mysql_native_password
    ports:
      - '33306:3306'
+  front:
+    stdin_open: true
+    build:
+      context: ./project/frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./project/frontend/:/usr/src/
+      - /usr/src/app/node_modules
+    ports:
+      - 3007:3000
+    depends_on:
+      - fastapi
 
 volumes:
   mysql_data:
