@@ -16,7 +16,7 @@ auth = AuthJwtCsrf()
 scraper = Scraper()
 
 
-@router.get('/api/scrape/', response_model=List[SiteBase])
+@router.post('/api/scrape/', response_model=List[SiteBase])
 async def scrape_site(request: Request, keyword: Optional[str] =None):
   auth.verify_jwt(request)
   sites = scraper.google_search(keyword)
