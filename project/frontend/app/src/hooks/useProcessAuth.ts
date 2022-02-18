@@ -39,6 +39,8 @@ export const useProcessAuth = () => {
   const logout = async () => {
     await logoutMutation.mutateAsync();
     queryClient.removeQueries("user");
+    queryClient.removeQueries("favoSites");
+    queryClient.removeQueries("scrapeSite");
     history.push("/");
   };
   return {

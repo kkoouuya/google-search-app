@@ -3,14 +3,18 @@ import { useHistory } from "react-router-dom";
 import { useMutation } from "react-query";
 import { useAppDispatch } from "../app/hooks";
 import { toggleCsrfState } from "../slices/appSlice";
-import { Credentials } from "../types/AuthType";
+
+type User = {
+  email: string
+  password: string
+}
 
 export const useMutateAuth = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
 
   const loginMutation = useMutation(
-    async (user: Credentials) =>
+    async (user: User) =>
       await axios.post(`${process.env.REACT_APP_API_URL}/login`, user, {
         withCredentials: true,
       }),
@@ -28,7 +32,7 @@ export const useMutateAuth = () => {
   );
 
   const registerMutation = useMutation(
-    async (user: Credentials) =>
+    async (user: User) =>
       await axios.post(`${process.env.REACT_APP_API_URL}/register`, user),
     {
       onError: (err: any) => {
