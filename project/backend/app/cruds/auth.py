@@ -56,10 +56,13 @@ async def db_login(db: AsyncSession, data: UserAuth) -> str:
     select(User).where(User.email == email)
   )
   user: Optional[Tuple[User]] = result.first()
-  
-  if user[0].email is None or not auth.verify_pw(password, user[0].password):
+  if user is None:
     raise HTTPException(
-      status_code=401, detail="Invalid email or password"
+      status_code=401, detail="Invalid email"
+    )
+  if not auth.verify_pw(password, user[0].password):
+    raise HTTPException(
+      status_code=401, detail="Invalid password"
     )
   token = auth.encode_jwt(user[0].email)
   return token
