@@ -24,25 +24,8 @@ def user_serializer(user) -> dict:
   }
   
 
-def user_id_serializer(user) -> dict:
-  return {
-    "user_id": user.user_id
-  }
 
-async def db_get_user_id(db: AsyncSession, subject: str) -> str:
-  result: Result = await db.execute(
-    select(User).where(User.email == subject)
-  )
-  user: Optional[Tuple[User]] = result.first()
   
-  if user is None:
-    raise HTTPException(
-      status_code=404, detail="User not found, please correct email"
-    )
-  
-  serialized_user = user_id_serializer(user)
-  
-  return serialized_user.user_id
 
 
 async def db_signup(db: AsyncSession, data: UserAuth) -> dict:

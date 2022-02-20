@@ -18,6 +18,7 @@ export type UserInfo = {
   updated_at: string;
 };
 
-export type Email = {
-  email: string
+export type GetUserInfo = {
+  message: string
+  user_id: string
 }

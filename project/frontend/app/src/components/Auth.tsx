@@ -27,7 +27,7 @@ export const Auth: VFC = () => {
       <div className="flex items-center">
         <BadgeCheckIcon className="h-8 w-8 mr-2 text-blue-500" />
         <span className="text-center text-3xl font-extrabold">
-          Google Search Scraping APP by kkoouuya
+          Google Search Scraping APP
         </span>
       </div>
       <h2 className="my-6">{isLogin ? "Login" : "Create a new account"}</h2>

@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.schemas.auth import Csrf
 from app.schemas.schemas import UserGETResponse, UserAuth
 from app.schemas.auth import SuccessMSG
-from app.cruds.auth import db_login, db_signup, db_get_user_id
+from app.cruds.auth import db_login, db_signup
 from app.auth_utils import AuthJwtCsrf
 from app.db import db_get
 
@@ -52,11 +52,9 @@ def logout(request: Request, response: Response, csrf_protect: CsrfProtect = Dep
 
 
 @router.get("/api/user", response_model=SuccessMSG)
-def get_user_refresh_jwt(request: Request, response: Response):
+def get_user_refresh_jwt(request: Request, response: Response, db: AsyncSession = Depends(db_get)):
   new_token, subject = auth.verify_update_jwt(request)
   response.set_cookie(
     key="access_token", value=f"Bearer {new_token}", httponly=True, samesite="none", secure=True
   )
-  user_id = db_get_user_id(subject=subject)
-  
-  return {"message": f"{subject} is logined", "user_id": user_id}
+  return {"message": f"{subject} is logined"}
