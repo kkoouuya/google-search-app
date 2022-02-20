@@ -3,10 +3,11 @@ import { RootState } from "../app/store";
 
 export interface AppState {
   csrfTokenExp: boolean;
+  email: string;
 }
 const initialState: AppState = {
-  
   csrfTokenExp: false,
+  email: "",
 };
 export const appSlice = createSlice({
   name: "app",
@@ -15,10 +16,14 @@ export const appSlice = createSlice({
     toggleCsrfState: (state) => {
       state.csrfTokenExp = !state.csrfTokenExp;
     },
+    setEmail: (state, action) => {
+      state.email = action.payload;
+    },
   },
 });
-export const { toggleCsrfState } =
-  appSlice.actions;
+export const { toggleCsrfState, setEmail } = appSlice.actions;
 
 export const selectCsrfState = (state: RootState) => state.app.csrfTokenExp;
+export const selectEmail = (state: RootState) => state.app.email;
+
 export default appSlice.reducer;

@@ -15,4 +15,8 @@ class Csrf(BaseModel):
 
 class SuccessMSG(BaseModel):
   message: str
+  
+  
+
+class Me(SuccessMSG):
   user_id: str

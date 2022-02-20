@@ -5,7 +5,7 @@ import siteReducer from "../slices/siteSlice";
 export const store = configureStore({
   reducer: {
     app: appReducer,
-    site: siteReducer
+    site: siteReducer,
   },
 });
 
