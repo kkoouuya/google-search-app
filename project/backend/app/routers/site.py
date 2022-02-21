@@ -23,10 +23,10 @@ async def scrape_site(request: Request, keyword: Optional[str] =None):
   return sites
 
 
-@router.get('/api/favorite/{user_id}', response_model=Optional[List[Site]])
-async def get_favo_site(request: Request, user_id: UUID, db: AsyncSession = Depends(db_get)):
+@router.get('/api/favorite/', response_model=Optional[List[Site]])
+async def get_favo_site(request: Request, email: str, db: AsyncSession = Depends(db_get)):
   auth.verify_jwt(request)
-  return await db_get_favorite_site(db, user_id=user_id)
+  return await db_get_favorite_site(db, email=email)
 
 
 @router.post('/api/favorite', response_model=Site)
