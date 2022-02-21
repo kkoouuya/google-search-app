@@ -31,7 +31,6 @@ async def db_create_favo_site(db: AsyncSession, data: FavoSite) -> dict:
   title = data.get('title')
   url = data.get('url')
   word = data.get('word')
-  print(f'user_id is {user_id}')
   
   result: Result = await db.execute(
     select(User).where(User.user_id == user_id)
@@ -49,21 +48,20 @@ async def db_create_favo_site(db: AsyncSession, data: FavoSite) -> dict:
   
   site: Optional[Tuple[Site]] = result.first()
   
-  if site[0].title == title and site[0].url == url and site[0].word == word:
+  if site is None:
+    site = Site()
+    site.user_id = user_id
+    site.title = title
+    site.url = url
+    site.word = word
+    db.add(site)
+    await db.commit()
+    await db.refresh(site)
+    return site_serializer(site)
+  else:
     raise HTTPException(
       status_code=400, detail="Site has already favorited"
     )
-  
-  site = Site()
-  site.user_id = user_id
-  site.title = title
-  site.url = url
-  site.word = word
-  db.add(site)
-  await db.commit()
-  await db.refresh(site)
-  print('site registration successfully')
-  return site_serializer(site)
 
 
 async def db_get_site(db: AsyncSession, site_id: UUID) -> Optional[List[Site]]:
@@ -74,20 +72,19 @@ async def db_get_site(db: AsyncSession, site_id: UUID) -> Optional[List[Site]]:
   return site[0] if site is not None else None
 
 
-async def db_get_favorite_site(db: AsyncSession, user_id: UUID) -> Optional[List[Site]]:
+async def db_get_favorite_site(db: AsyncSession, email: str) -> Optional[List[Site]]:
   result: Result = await db.execute(
-    select(Site).filter(Site.user_id == user_id, Site.is_deleted == 0)
+    select(Site).filter(
+      Site.user_id == 
+      (select(User.user_id).filter(User.email == email)),
+      Site.is_deleted == 0
+    )
   )
   site: Optional[List[Site]] = result.all()
-  print(site)
-  # site: Optional[List[Site]] = result.first()
-  # print(site)
-  # return
   items = []
   for si in site:
     for s in si:
       items.append(site_serializer(s))
-  print(items)
   return items if site is not None else None
 
 
