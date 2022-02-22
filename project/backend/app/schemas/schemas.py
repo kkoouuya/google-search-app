@@ -12,7 +12,6 @@ class ModelBase(BaseModel):
 
 
 class SiteBase(BaseModel):
-  # rank: int
   title: str
   url: str
 
@@ -44,7 +43,7 @@ class UserGETResponse(UserUpdateRequest, ModelBase):
 
 
 class FavoSite(BaseModel):
-  user_id: UUID
+  email: str
   title: str
   url: str
   word: str

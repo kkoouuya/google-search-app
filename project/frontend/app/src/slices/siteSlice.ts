@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../app/store";
 import { PostSite, SiteBase, PostFavoSite } from "../types/SiteType";
 
@@ -51,22 +51,6 @@ export const createFavoSite = createAsyncThunk<
   }
 });
 
-export const getFavoSite = createAsyncThunk<
-  SiteBase[],
-  string,
-  { rejectValue: ErrorResponse }
->("sites/getFaveSite", async (user_id, thunkAPI) => {
-  try {
-    const res = await axios.get(
-      `${process.env.REACT_APP_API_URL}/favorite/${user_id}`
-    );
-    return res.data;
-  } catch (err) {
-    thunkAPI.rejectWithValue({ message: err });
-    throw err;
-  }
-});
-
 export const siteSlice = createSlice({
   name: "site",
   initialState,
@@ -84,16 +68,11 @@ export const siteSlice = createSlice({
     builder.addCase(createFavoSite.fulfilled, (state, action) => {
       state.favoSiteList.push(action.payload);
     });
-    builder.addCase(getFavoSite.fulfilled, (state, action) => {
-      state.favoSiteList = action.payload;
-    });
   },
 });
 
 export const { setWord } = siteSlice.actions;
 export const selectSiteListState = (state: RootState) => state.site.siteList;
-export const selectFavoSiteListState = (state: RootState) =>
-  state.site.favoSiteList;
 export const selectWord = (state: RootState) => state.site.word;
 
 export default siteSlice.reducer;

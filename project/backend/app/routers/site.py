@@ -24,12 +24,12 @@ async def scrape_site(request: Request, keyword: Optional[str] =None):
 
 
 @router.get('/api/favorite/', response_model=Optional[List[Site]])
-async def get_favo_site(request: Request, email: str, db: AsyncSession = Depends(db_get)):
-  auth.verify_jwt(request)
-  return await db_get_favorite_site(db, email=email)
+async def get_favo_site(request: Request, db: AsyncSession = Depends(db_get)):
+  new_token, subject = auth.verify_update_jwt(request)
+  return await db_get_favorite_site(db, email=subject)
 
 
-@router.post('/api/favorite', response_model=Site)
+@router.post('/api/register/favosite', response_model=Site)
 async def create_favo_site(request: Request, response: Response, data: FavoSite, csrf_protect:CsrfProtect = Depends(), db: AsyncSession = Depends(db_get)):
   csrf_token = csrf_protect.get_csrf_from_headers(request.headers)
   csrf_protect.validate_csrf(csrf_token)
@@ -38,11 +38,14 @@ async def create_favo_site(request: Request, response: Response, data: FavoSite,
   return favorite_site
 
 
-@router.put('/api/favorite/{site_id}', response_model=Site)
+@router.put('/api/favorite/{site_id}', response_model=Optional[List[Site]])
 async def unfavorite_site(request: Request, response: Response, site_id: UUID, csrf_protect:CsrfProtect = Depends(), db: AsyncSession = Depends(db_get)):
   csrf_token = csrf_protect.get_csrf_from_headers(request.headers)
   csrf_protect.validate_csrf(csrf_token)
+  new_token, subject = auth.verify_update_jwt(request)
   site = await db_get_site(db, site_id=site_id)
   if site is None:
     raise HTTPException(status_code=404, detail="Site not found")
-  return await db_unfavorite_site(db, site)
+  await db_unfavorite_site(db, site)
+  
+  return await db_get_favorite_site(db, email=subject)

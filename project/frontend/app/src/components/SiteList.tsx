@@ -1,11 +1,14 @@
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { selectSiteListState, selectWord } from "../slices/siteSlice";
 import { StarIcon } from "@heroicons/react/outline";
+import { useAppSelector } from "../app/hooks";
+import { useProcessSite } from "../hooks/useProcessSite";
+import { selectEmail } from "../slices/appSlice";
+import { selectSiteListState, selectWord } from "../slices/siteSlice";
 
 export const SiteList = () => {
   const selectSiteList = useAppSelector(selectSiteListState);
-  const dispatch = useAppDispatch();
+  const email = useAppSelector(selectEmail)
   const word = useAppSelector(selectWord);
+  const { processFavoSite } = useProcessSite();
 
   return (
     <>
@@ -31,16 +34,14 @@ export const SiteList = () => {
                     <button>
                       <StarIcon
                         className="h-6 w-6 mr-3 ml-3 text-yellow-300 cursor-pointer hover:text-yellow-600"
-                        // onClick={() =>
-                        //   dispatch(
-                        //     createFavoSite({
-                        //       // user_id: user_id,
-                        //       title: site.title,
-                        //       url: site.url,
-                        //       word: word,
-                        //     })
-                        //   )
-                        // }
+                        onClick={() =>
+                          processFavoSite({
+                            email: email,
+                            title: site.title,
+                            url: site.url,
+                            word: word
+                          })
+                        }
                       />
                     </button>
                   </li>
