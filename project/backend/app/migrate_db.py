@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from models.model import Base
 
-DB_URL = "mysql+pymysql://root@mysql:3306/googleserachapp?charset=utf8"
+DB_URL = ('MYSQL_MIGRATE_UEL')
 engine = create_engine(DB_URL, echo=True)
 
 

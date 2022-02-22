@@ -3,8 +3,8 @@ from fastapi import APIRouter, Response, Request, Depends, HTTPException
 from fastapi.encoders import jsonable_encoder
 from fastapi_csrf_protect import CsrfProtect
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.cruds.crud import db_create_favo_site, db_get_site, db_unfavorite_site, db_get_favorite_site
-from app.schemas.schemas import SiteBase, FavoSite, Site
+from app.cruds.site import db_create_favo_site, db_get_site, db_unfavorite_site, db_get_favorite_site
+from app.schemas.site import SiteBase, FavoSite, Site
 from app.auth_utils import AuthJwtCsrf
 from app.scraper import Scraper
 from app.db import db_get

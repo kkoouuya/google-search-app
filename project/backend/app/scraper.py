@@ -1,6 +1,7 @@
+from decouple import config
 from typing import List, Optional
 from fastapi import HTTPException
-from app.schemas.schemas import SiteBase
+from app.schemas.site import SiteBase
 import requests
 import bs4
 import csv
@@ -9,9 +10,9 @@ import csv
 class Scraper():
   def google_search(self, keyword: Optional[str] = None) -> List[SiteBase]:
     if keyword is None:
-      search_url: str = "https://www.google.com/search"
+      search_url: str = ('SCRAPE_URL')
     else:
-      search_url: str = "https://www.google.com/search?q="+keyword
+      search_url: str = config('SCRAPE_URL') + f'?q=+{keyword}'
       
     search_response = requests.get(search_url)
     

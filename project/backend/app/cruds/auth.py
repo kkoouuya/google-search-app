@@ -4,7 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.model import User
-from app.schemas.schemas import UserAuth
+from app.schemas.site import UserAuth
 from app.auth_utils import AuthJwtCsrf
 
 
