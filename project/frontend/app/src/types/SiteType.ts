@@ -1,5 +1,5 @@
 export type PostFavoSite = {
-  user_id: string
+  email: string
   title: string
   url: string
   word: string

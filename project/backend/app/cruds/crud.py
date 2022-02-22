@@ -27,30 +27,33 @@ def site_serializer(site) -> dict:
 
 
 async def db_create_favo_site(db: AsyncSession, data: FavoSite) -> dict:
-  user_id = data.get('user_id')
+  email = data.get('email')
   title = data.get('title')
   url = data.get('url')
   word = data.get('word')
   
   result: Result = await db.execute(
-    select(User).where(User.user_id == user_id)
+    select(User.user_id).where(User.email == email)
   )
-  user: Optional[Tuple[User]] = result.first()
+  user_id: Optional[Tuple[UUID]] = result.first()
+  print(user_id)
+  print(user_id[0])
+  print(type(user_id))
   
-  if user is None:
+  if user_id is None:
     raise HTTPException(
       status_code=404, detail="User not found, please correct user_id"
     )
     
   result: Result = await db.execute(
-    select(Site).where(Site.user_id == user_id, Site.is_deleted == 0)
+    select(Site).where(Site.user_id == user_id[0], Site.title == title, Site.url == url, Site.word == word, Site.is_deleted == 0)
   )
   
   site: Optional[Tuple[Site]] = result.first()
   
   if site is None:
     site = Site()
-    site.user_id = user_id
+    site.user_id = user_id[0]
     site.title = title
     site.url = url
     site.word = word

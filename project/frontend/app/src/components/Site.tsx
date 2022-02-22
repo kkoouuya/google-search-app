@@ -1,24 +1,18 @@
-import { useEffect, VFC } from "react";
+import { VFC } from "react";
 import { LogoutIcon } from "@heroicons/react/outline";
 import { NewspaperIcon } from "@heroicons/react/solid";
 import { useAppSelector, useAppDispatch } from "../app/hooks";
 import { useProcessAuth } from "../hooks/useProcessAuth";
+import { useQueryUser } from "../hooks/useQueryUser";
+import { selectWord, setWord, serachSite } from "../slices/siteSlice";
 import { SiteList } from "./SiteList";
 import { FavoSiteList } from "./FavoSiteList";
-import { selectWord, setWord, serachSite } from "../slices/siteSlice";
-import { useQueryUser } from "../hooks/useQueryUser";
-import { selectEmail, setEmail } from "../slices/appSlice";
 
 export const Site: VFC = () => {
   const { logout } = useProcessAuth();
   const { data: dataUser } = useQueryUser();
   const dispatch = useAppDispatch();
   const word = useAppSelector(selectWord);
-  const email = useAppSelector(selectEmail);
- 
-  useEffect(() => {
-    dispatch(setEmail(dataUser?.message));
-  }, []);
 
   return (
     <div className="flex justify-center items-center flex-col min-h-screen text-gray-600 font-mono">
@@ -28,7 +22,7 @@ export const Site: VFC = () => {
           Google Search Scraping APP
         </span>
       </div>
-      <p className="my-3 text-sm">{dataUser?.message}</p>
+      <p className="my-3 text-sm">{dataUser?.message} is logined</p>
       <LogoutIcon
         onClick={logout}
         className="h-7 w-7 mt-1 mb-5 text-blue-500 cursor-pointer"
@@ -48,11 +42,13 @@ export const Site: VFC = () => {
           search
         </button>
       </div>
-      <div className="mb-10">
-        <SiteList />
-      </div>
-      <div>
-        <FavoSiteList />
+      <div className="flex flex-row">
+        <div className="flex-1">
+          <SiteList />
+        </div>
+        <div className="flex-1 ml-5 w-screen">
+          <FavoSiteList />
+        </div>
       </div>
     </div>
   );

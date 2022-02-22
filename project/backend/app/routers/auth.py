@@ -57,4 +57,4 @@ def get_user_refresh_jwt(request: Request, response: Response, db: AsyncSession 
   response.set_cookie(
     key="access_token", value=f"Bearer {new_token}", httponly=True, samesite="none", secure=True
   )
-  return {"message": f"{subject} is logined"}
+  return {"message": subject}

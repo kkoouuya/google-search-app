@@ -20,5 +20,4 @@ export type UserInfo = {
 
 export type GetUserInfo = {
   message: string
-  user_id: string
 }
