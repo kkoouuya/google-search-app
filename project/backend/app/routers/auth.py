@@ -3,7 +3,7 @@ from fastapi.encoders import jsonable_encoder
 from fastapi_csrf_protect import CsrfProtect
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.schemas.auth import Csrf
-from app.schemas.site import UserGETResponse, UserAuth
+from app.schemas.schemas import UserGETResponse, UserAuth
 from app.schemas.auth import SuccessMSG
 from app.cruds.auth import db_login, db_signup
 from app.auth_utils import AuthJwtCsrf
