@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  web:
+   build:
+    context: ./project/backend
+    dockerfile: Dockerfile.prod
+   ports:
+    - 8004:8000
+   environment:
+    - ENVIRONMENT=production
+    # - DATABASE_URL=mysql://mysql:mysql@web-db:3306/web_prod
+   depends_on:
+    - web-db
+  
+  web-db:
+   build:
+    context: ./project/backend/db
+    dockerfile: Dockerfile
+   expose:
+    - 3306
+   environment:
+    - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    - TZ=Asia/Tokyo
+  
+  # mysql:
+  #  image: mysql:8.0
+  #  environment:
+  #   MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+  #   MYSQL_DATABASE: 'googlesearchapppro'
+  #   TZ: 'Asia/Tokyo'
+  #  volumes:
+  #    - mysql_data:/var/lib/mysql
+  #  command: --default-authentication-plugin=mysql_native_password
+  #  expose:
+  #   - 3306
+  
+  front:
+   build:
+    context: ./project/frontend
+    dockerfile: Dockerfile.prod
+    args:
+     - NODE_ENV=production
+     - REACT_APP_API_SERVICE_URL=${REACT_APP_API_SERVICE_URL}
+   ports:
+     - 3007:80
+   depends_on:
+     - web
+
+# volumes:
+#   mysql_data:
